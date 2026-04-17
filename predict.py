@@ -1,4 +1,5 @@
 from typing import Tuple
+import sys
 
 import torch
 import torch.nn as nn
@@ -34,6 +35,9 @@ def predict_image(image_path: str) -> Tuple[str, float]:
 
 
 if __name__ == "__main__":
-    image_path = "./test_image.png"  # 改成你的图片路径
+    if len(sys.argv) != 2:
+        print("Usage: python predict.py <image_path>")
+        sys.exit(1)
+    image_path = sys.argv[1]
     label, confidence = predict_image(image_path)
     print(f"Prediction: {label}, confidence: {confidence:.4f}")
