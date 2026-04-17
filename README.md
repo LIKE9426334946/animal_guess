@@ -1,5 +1,11 @@
 # animal_guess
 
+# 运行方法
+训练模型  
+python train.py
+
+预测图片  
+python predict.py test.png
 
 # kaggle运行
 %cd /kaggle/working  
