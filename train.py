@@ -1,7 +1,7 @@
 import os
 import random
 from typing import Tuple
-from model import SimpleCNN
+from model import get_model
 
 import torch
 import torch.nn as nn
@@ -14,8 +14,8 @@ from torchvision import datasets, transforms
 # 1. 配置
 # =========================
 BATCH_SIZE = 256
-EPOCHS = 20
-LEARNING_RATE = 1e-3
+EPOCHS = 30
+LEARNING_RATE = 1e-4
 NUM_CLASSES = 10
 DATA_DIR = "./data"
 CHECKPOINT_DIR = "./checkpoints"
@@ -44,15 +44,17 @@ def get_dataloaders() -> Tuple[DataLoader, DataLoader]:
     训练集做简单数据增强，测试集只做标准化。
     """
     train_transform = transforms.Compose([
+        transforms.Resize((224,244)),
         transforms.RandomHorizontalFlip(),
-        transforms.RandomCrop(32, padding=4),
+        transforms.RandomCrop(224, padding=4),
         transforms.ToTensor(),
-        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+        transforms.Normalize((0.4914, 0.4822, 0.4465),(0.2023, 0.1994, 0.2010)),
     ])
 
     test_transform = transforms.Compose([
+        transforms.Resize((224,244)),
         transforms.ToTensor(),
-        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+        transforms.Normalize((0.4914, 0.4822, 0.4465),(0.2023, 0.1994, 0.2010)),
     ])
 
     train_dataset = datasets.CIFAR10(
@@ -162,7 +164,7 @@ def main() -> None:
 
     train_loader, test_loader = get_dataloaders()
 
-    model = SimpleCNN(num_classes=NUM_CLASSES).to(DEVICE)
+    model = get_model(num_classes=NUM_CLASSES).to(DEVICE)
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
