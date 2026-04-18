@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import torchvision.models as models
 
 # =========================
 # 3. 模型
@@ -36,3 +37,12 @@ class SimpleCNN(nn.Module):
         x = self.features(x)
         x = self.classifier(x)
         return x
+
+def get_model(num_classes: int = 10):
+    # 1. 加载 ResNet18
+    model = models.resnet18(weights=models.ResNet18_Weights.DEFAULT)  # 用预训练
+
+    # 2. 修改最后一层
+    model.fc = nn.Linear(model.fc.in_features, num_classes)
+
+    return model
