@@ -13,7 +13,7 @@ from torchvision import datasets, transforms
 # =========================
 # 1. 配置
 # =========================
-BATCH_SIZE = 256
+BATCH_SIZE = 64
 EPOCHS = 30
 LEARNING_RATE = 1e-4
 NUM_CLASSES = 10
