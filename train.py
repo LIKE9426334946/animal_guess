@@ -12,8 +12,8 @@ from torchvision import datasets, transforms
 # =========================
 # 1. 配置
 # =========================
-BATCH_SIZE = 128
-EPOCHS = 10
+BATCH_SIZE = 256
+EPOCHS = 20
 LEARNING_RATE = 1e-3
 NUM_CLASSES = 10
 DATA_DIR = "./data"
