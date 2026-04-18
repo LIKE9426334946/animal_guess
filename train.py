@@ -1,6 +1,7 @@
 import os
 import random
 from typing import Tuple
+from model import SimpleCNN
 
 import torch
 import torch.nn as nn
@@ -85,43 +86,6 @@ def get_dataloaders() -> Tuple[DataLoader, DataLoader]:
     )
 
     return train_loader, test_loader
-
-
-# =========================
-# 3. 模型
-# =========================
-class SimpleCNN(nn.Module):
-    """一个适合 CIFAR-10 入门练习的简单卷积神经网络。"""
-
-    def __init__(self, num_classes: int = 10):
-        super().__init__()
-
-        self.features = nn.Sequential(
-            nn.Conv2d(3, 32, kernel_size=3, padding=1),   # [B, 32, 32, 32]
-            nn.ReLU(inplace=True),
-            nn.MaxPool2d(kernel_size=2),                  # [B, 32, 16, 16]
-
-            nn.Conv2d(32, 64, kernel_size=3, padding=1),  # [B, 64, 16, 16]
-            nn.ReLU(inplace=True),
-            nn.MaxPool2d(kernel_size=2),                  # [B, 64, 8, 8]
-
-            nn.Conv2d(64, 128, kernel_size=3, padding=1), # [B, 128, 8, 8]
-            nn.ReLU(inplace=True),
-            nn.MaxPool2d(kernel_size=2),                  # [B, 128, 4, 4]
-        )
-
-        self.classifier = nn.Sequential(
-            nn.Flatten(),
-            nn.Linear(128 * 4 * 4, 256),
-            nn.ReLU(inplace=True),
-            nn.Dropout(0.5),
-            nn.Linear(256, num_classes)
-        )
-
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        x = self.features(x)
-        x = self.classifier(x)
-        return x
 
 
 # =========================
