@@ -6,8 +6,8 @@ import torch.nn as nn
 from PIL import Image
 from torchvision import transforms
 
-from train import SimpleCNN, MODEL_PATH, CLASSES, DEVICE
-
+from train import MODEL_PATH, CLASSES, DEVICE
+from model import get_model
 
 def get_transform():
     return transforms.Compose([
@@ -19,7 +19,7 @@ def get_transform():
 
 @torch.no_grad()
 def predict_image(image_path: str) -> Tuple[str, float]:
-    model = SimpleCNN(num_classes=10).to(DEVICE)
+    model = get_model(num_classes=10).to(DEVICE)
     model.load_state_dict(torch.load(MODEL_PATH, map_location=DEVICE))
     model.eval()
 
